@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const Image = styled.img`
-  width: 100%;
-  height: auto;
+  width: 15em;
+  height: 15em;
   border-radius: 8px;
 `;
 

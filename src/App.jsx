@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Products from './components/Products';
+import Banner from './components/Banner';
+import SearchBar from './components/SearchBar';
+import Categories from './components/Categories';
 import styled from 'styled-components';
 
 const MainContent = styled.main`
@@ -11,7 +14,7 @@ const MainContent = styled.main`
 `;
 
 const App = () => {
-  const products = [
+  const allProducts = [
     {
       id: 1,
       title: "Placa de Vídeo NVIDIA RTX 3080",
@@ -154,11 +157,34 @@ const App = () => {
     }
   ];
 
-   return (
+  const [filteredProducts, setFilteredProducts] = useState(allProducts);
+
+  const handleSearch = (searchTerm) => {
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    const filtered = allProducts.filter(product =>
+      product.title.toLowerCase().includes(lowercasedSearchTerm) ||
+      product.description.toLowerCase().includes(lowercasedSearchTerm)
+    );
+    setFilteredProducts(filtered);
+  };
+
+  const handleSelectCategory = (category) => {
+    if (category === 'Todos') {
+      setFilteredProducts(allProducts);
+    } else {
+      const filtered = allProducts.filter(product => product.category === category);
+      setFilteredProducts(filtered);
+    }
+  };
+
+  return (
     <div>
       <Header />
+      <Banner />
+      <SearchBar onSearch={handleSearch} />
+      <Categories onSelectCategory={handleSelectCategory} />
       <MainContent>
-        <Products products={products} />
+        <Products products={filteredProducts} />
       </MainContent>
       <Footer />
     </div>
